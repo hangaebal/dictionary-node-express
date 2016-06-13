@@ -1,0 +1,18 @@
+{
+  "name": "dictionary",
+  "authors": [
+    "hangaebal"
+  ],
+  "homepage": "https://github.com/hangaebal/node-express",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
