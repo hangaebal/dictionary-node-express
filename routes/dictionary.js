@@ -3,8 +3,8 @@ var router = express.Router();
 
 var https = require('https');
 
-var CLIENT_ID = 'HnPF7N0k2aGWefOZoJJA';
-var CLIENT_SECRET = 'I7KFTf9LSS';
+var CLIENT_ID = '발급받은 ID';
+var CLIENT_SECRET = '발급받은 SECRET';
 var API_URI = '/v1/search/encyc.xml?query=';
 
 var options = {
