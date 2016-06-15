@@ -1,5 +1,49 @@
 extends layout
 
 block content
-  h1 사전
-  p Welcome to #{title}
+  h2 사전 API 활용
+    div.form-inline
+      input#source.form-control(name='q') 
+      button#sumbitBtn.btn.btn-primary 검색
+  hr
+  div#result(style={background: '#f7f7f9', padding : '20px 50px'})
+  script.
+    $('#source').on('keypress', function(e){
+      if (e.which == 13) {
+        fnAjaxDictionary();
+      }
+    });
+    $('#sumbitBtn').click(function(){
+      fnAjaxDictionary();
+    });
+
+    function fnAjaxDictionary(){
+      var searchText = $('#source').val().trim();
+      if (searchText == '') {
+        alert('검색어를 입력하세요');
+        return false;
+      }
+      
+      $.ajax({
+        url: '/dictionary?q=' + $('#source').val()
+      })
+      .done(function(data){
+        $('#result').text('');
+        if (data.length == 0) {
+          $('#result').append('<h4>검색 결과가 없습니다.</h4>');
+        } else {
+          $(data).each(function(i,row){
+            var dl = '<dl class="dl-horizontal">' + 
+                        '<dt><a href="'+ row.link +'" target="_blank">' + row.title + '</a></dt>' +
+                        '<dd>' + row.description + '</dd>' +
+                      '</dl>';
+            $('#result').append(dl);
+          });        
+        }
+
+      })
+      .fail(function(jqXHR, status, e){
+        $('#result').text('');
+        alert(jqXHR.responseText);
+      });
+    }
