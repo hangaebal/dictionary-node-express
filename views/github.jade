@@ -1,0 +1,63 @@
+extends layout
+
+block content
+  h2 GitHub API 활용
+    div.form-inline
+      input#source.form-control(name='q', value='nonono') 
+      button#sumbitBtn.btn.btn-primary 검색
+  hr
+  table.table.table-bordered.table-hover
+    thead
+      tr
+        th name
+        th description
+        th(style={width:'10%'}) language
+        th(style={width:'8%'}) star
+        th(style={width:'8%'}) watch
+    tbody#target
+
+  div#result(style={background: '#f7f7f9', padding : '20px 50px'})
+  script.
+    $('#source').on('keypress', function(e){
+      if (e.which == 13) {
+        fnAjaxQuery();
+      }
+    });
+    $('#sumbitBtn').click(function(){
+      fnAjaxQuery();
+    });
+
+    function fnAjaxQuery(){
+      var searchText = $('#source').val().trim();
+      if (searchText == '') {
+        alert('검색어를 입력하세요');
+        return false;
+      }
+
+      $('#target').text('');
+      $.ajax({
+        url: '/github?q=' + $('#source').val()
+        ,success: function(data) {
+          console.log(data);
+          if (data.total_count < 1) {
+            $('#target').append('<tr><th rowspan="5">검색 결과가 없습니다.</td></tr>');
+            return false;
+          }
+          $(data.items).each(function(i, item) {
+            var tr = 
+              '<tr>' +
+                '<td><a target="_blank" href="'+ item.html_url +'">' + item.full_name + '</a></td>' +
+                '<td>' + item.description + '</td>' +
+                '<td>' + item.language + '</td>' +
+                '<td>' + item.stargazers_count + '</td>' +
+                '<td>' + item.watchers_count + '</td>' +
+              '</tr>';
+            $('#target').append(tr);
+          });
+        }
+        ,error: function(jqXHR, status, e) {
+          console.log(jqXHR);
+          console.log(e);
+        }
+      })
+    }
