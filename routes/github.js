@@ -32,10 +32,10 @@ router.get('/', function(req, res, next) {
       });
       apiRes.on('end', function() {
         var data = JSON.parse(body);
-        res.send(data);
+        res.render('github', {data: data, q: req.query.q});
       });
     });
-    apiReq.on('error', (e) => {
+    apiReq.on('error', function(e) {
       console.log(e);
     });
 
